@@ -10,10 +10,11 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
             $table->string('description');
             $table->decimal('amount', 10, 2);
-            $table->date('expense_date');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('category');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
