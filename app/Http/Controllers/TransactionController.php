@@ -75,4 +75,71 @@ class TransactionController extends Controller
         $transaction->load('items.product');
         return view('transactions.show', compact('transaction'));
     }
+
+    public function edit(Transaction $transaction)
+    {
+        $transaction->load('items.product');
+        $products = Product::where('stock', '>', 0)->orWhereIn('id', $transaction->items->pluck('product_id'))->get();
+        return view('transactions.edit', compact('transaction', 'products'));
+    }
+
+    public function update(Request $request, Transaction $transaction)
+    {
+        $request->validate([
+            'items' => 'required|array',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Kembalikan stok produk lama
+            foreach ($transaction->items as $item) {
+                $item->product->increment('stock', $item->quantity);
+            }
+            $transaction->items()->delete();
+
+            $total = 0;
+            foreach ($request->items as $item) {
+                $product = Product::findOrFail($item['product_id']);
+                if ($product->stock < $item['quantity']) {
+                    throw new \Exception("Insufficient stock for {$product->name}");
+                }
+                $transaction->items()->create([
+                    'product_id' => $product->id,
+                    'quantity' => $item['quantity'],
+                    'price' => $product->price,
+                    'subtotal' => $product->price * $item['quantity'],
+                ]);
+                $product->decrement('stock', $item['quantity']);
+                $total += $product->price * $item['quantity'];
+            }
+            $transaction->update(['total_amount' => $total]);
+            DB::commit();
+            return redirect()->route('transactions.show', $transaction)
+                ->with('success', 'Transaction updated successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function destroy(Transaction $transaction)
+    {
+        try {
+            DB::beginTransaction();
+            // Kembalikan stok produk
+            foreach ($transaction->items as $item) {
+                $item->product->increment('stock', $item->quantity);
+            }
+            $transaction->items()->delete();
+            $transaction->delete();
+            DB::commit();
+            return redirect()->route('transactions.index')->with('success', 'Transaction deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', $e->getMessage());
+        }
+    }
 } 
