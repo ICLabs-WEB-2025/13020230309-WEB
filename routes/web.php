@@ -10,6 +10,8 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\KasirController;
+use App\Http\Controllers\PurchaseController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -43,4 +45,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
     Route::get('reports/products', [ReportController::class, 'products'])->name('reports.products');
     Route::get('reports/expenses', [ReportController::class, 'expenses'])->name('reports.expenses');
+
+    // Kasir
+    Route::get('/kasir', [KasirController::class, 'index'])->name('kasir.index');
+    Route::get('/kasir/search', [KasirController::class, 'search'])->name('kasir.search');
+    Route::post('/kasir/store', [KasirController::class, 'store'])->name('kasir.store');
+    Route::get('/kasir/invoice/{id}', [KasirController::class, 'invoice'])->name('kasir.invoice');
+
+    // Purchases (Pembelian)
+    Route::resource('purchases', PurchaseController::class);
 });

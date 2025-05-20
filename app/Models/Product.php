@@ -12,15 +12,15 @@ class Product extends Model
     protected $fillable = [
         'code',
         'name',
-        'category',
+        'unit',
         'price',
         'stock',
-        'description',
-        'sn'
+        'description'
     ];
 
     protected $casts = [
         'price' => 'decimal:2',
+        'stock' => 'integer'
     ];
 
     public function category()
@@ -56,8 +56,7 @@ class Product extends Model
     public function scopeSearch($query, $search)
     {
         return $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('code', 'like', "%{$search}%")
-                    ->orWhere('category', 'like', "%{$search}%");
+                    ->orWhere('code', 'like', "%{$search}%");
     }
 
     public function scopeCategory($query, $category)

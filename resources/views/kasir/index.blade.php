@@ -100,14 +100,17 @@ function renderCart() {
     let change = paid - subtotal;
     document.getElementById('change').textContent = 'Rp ' + change.toLocaleString();
 }
+
 window.updateQty = function(idx, val) {
     cart[idx].qty = parseInt(val);
     renderCart();
 }
+
 window.removeItem = function(idx) {
     cart.splice(idx, 1);
     renderCart();
 }
+
 document.getElementById('discount').addEventListener('input', renderCart);
 document.getElementById('paid').addEventListener('input', renderCart);
 
@@ -147,6 +150,7 @@ document.getElementById('search-barcode').addEventListener('input', function() {
             });
         });
 });
+
 document.getElementById('kasirForm').addEventListener('submit', function(e) {
     e.preventDefault();
     let items = cart.map(item => ({

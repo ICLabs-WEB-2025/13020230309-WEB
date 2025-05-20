@@ -15,7 +15,7 @@ class DashboardController extends Controller
     {
         // Total penjualan hari ini
         $todaySales = Transaction::whereDate('created_at', Carbon::today())
-            ->sum('total_amount');
+            ->sum('total');
 
         // Total pengeluaran hari ini
         $todayExpenses = Expense::whereDate('date', Carbon::today())
@@ -29,14 +29,13 @@ class DashboardController extends Controller
                 'products.id',
                 'products.code',
                 'products.name',
-                'products.category',
                 'products.price',
                 DB::raw('SUM(transaction_items.quantity) as total_sold')
             ])
             ->join('transaction_items', 'products.id', '=', 'transaction_items.product_id')
             ->join('transactions', 'transactions.id', '=', 'transaction_items.transaction_id')
             ->whereDate('transactions.created_at', Carbon::today())
-            ->groupBy('products.id', 'products.code', 'products.name', 'products.category', 'products.price')
+            ->groupBy('products.id', 'products.code', 'products.name', 'products.price')
             ->orderBy('total_sold', 'desc')
             ->limit(5)
             ->get();

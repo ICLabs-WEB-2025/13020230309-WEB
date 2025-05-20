@@ -11,20 +11,12 @@ return new class extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('customer_id')->nullable()->constrained()->onDelete('set null');
-            $table->decimal('total_amount', 10, 2);
-            $table->timestamps();
-        });
-
-        Schema::create('transaction_items', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('transaction_id')->constrained()->onDelete('cascade');
-            $table->foreignId('product_id')->constrained()->onDelete('cascade');
-            $table->string('name');
-            $table->string('unit');
-            $table->decimal('price', 10, 2);
-            $table->integer('quantity');
-            $table->decimal('subtotal', 12, 2);
+            $table->string('customer')->default('Umum');
+            $table->string('payment_type');
+            $table->decimal('total', 12, 2);
+            $table->decimal('discount', 12, 2)->default(0);
+            $table->decimal('paid', 12, 2);
+            $table->decimal('change', 12, 2);
             $table->timestamps();
         });
     }
@@ -32,6 +24,5 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('transactions');
-        Schema::dropIfExists('transaction_items');
     }
 }; 

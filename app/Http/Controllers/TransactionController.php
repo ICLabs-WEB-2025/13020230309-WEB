@@ -35,7 +35,7 @@ class TransactionController extends Controller
             DB::beginTransaction();
 
             $transaction = Transaction::create([
-                'total_amount' => 0,
+                'total' => 0,
                 'user_id' => auth()->id(),
             ]);
 
@@ -58,7 +58,7 @@ class TransactionController extends Controller
                 $total += $product->price * $item['quantity'];
             }
 
-            $transaction->update(['total_amount' => $total]);
+            $transaction->update(['total' => $total]);
             DB::commit();
 
             return redirect()->route('transactions.show', $transaction)
@@ -115,7 +115,7 @@ class TransactionController extends Controller
                 $product->decrement('stock', $item['quantity']);
                 $total += $product->price * $item['quantity'];
             }
-            $transaction->update(['total_amount' => $total]);
+            $transaction->update(['total' => $total]);
             DB::commit();
             return redirect()->route('transactions.show', $transaction)
                 ->with('success', 'Transaction updated successfully.');

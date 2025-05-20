@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Kasir Toko')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
@@ -68,9 +69,14 @@
                 <a class="nav-link @if(request()->routeIs('dashboard')) active @endif" href="{{ route('dashboard') }}">
                     <span class="nav-icon"><i class="fas fa-home"></i></span> Dashboard
                 </a>
-                <a class="nav-link @if(request()->is('penjualan*')) active @endif" href="#">
+                <a class="nav-link @if(request()->is('kasir*')) active @endif" href="{{ route('kasir.index') }}">
                     <span class="nav-icon"><i class="fas fa-shopping-cart"></i></span> Penjualan
                 </a>
+                @if(auth()->user() && auth()->user()->role == 'admin')
+                <a class="nav-link @if(request()->is('purchases*')) active @endif" href="{{ route('purchases.index') }}">
+                    <span class="nav-icon"><i class="fas fa-truck"></i></span> Pembelian
+                </a>
+                @endif
                 <a class="nav-link @if(request()->is('stock-opname*')) active @endif" href="#">
                     <span class="nav-icon"><i class="fas fa-clipboard-list"></i></span> Stock Opname
                 </a>

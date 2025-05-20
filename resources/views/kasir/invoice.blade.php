@@ -12,16 +12,15 @@
                 <div>
                     <h5>No. Invoice: {{ $transaction->id }}</h5>
                     <div><b>Dari</b></div>
-                    <div>Seniman Koding</div>
-                    <div>Sogo Babat Lamongan Jawa Timur</div>
-                    <div>Telp/wa: 082299078642</div>
-                    <div>Email: senimankoding@gmail.com</div>
+                    <div>Kasir Toko</div>
+                    <div>Jl. Contoh No. 123</div>
+                    <div>Telp: 08123456789</div>
+                    <div>Email: info@kasirtoko.com</div>
                     <div>Kasir: {{ auth()->user()->name ?? '-' }}</div>
                 </div>
                 <div class="text-end">
                     <div><b>Pembeli</b></div>
                     <div>{{ $transaction->customer }}</div>
-                    <div>Nama Kurir: -</div>
                     <div>Tipe Pembayaran: {{ ucfirst($transaction->payment_type) }}</div>
                     <div>Tanggal: {{ $transaction->created_at->format('d M Y H:i:s') }}</div>
                 </div>

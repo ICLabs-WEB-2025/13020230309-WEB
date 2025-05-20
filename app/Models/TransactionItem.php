@@ -10,7 +10,19 @@ class TransactionItem extends Model
     use HasFactory;
 
     protected $fillable = [
-        'transaction_id', 'product_id', 'name', 'unit', 'price', 'quantity', 'subtotal'
+        'transaction_id',
+        'product_id',
+        'name',
+        'unit',
+        'price',
+        'quantity',
+        'subtotal'
+    ];
+
+    protected $casts = [
+        'price' => 'decimal:2',
+        'quantity' => 'integer',
+        'subtotal' => 'decimal:2'
     ];
 
     public function transaction()

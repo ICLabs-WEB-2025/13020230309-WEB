@@ -19,14 +19,14 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
             return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+            'email' => 'Email atau password yang dimasukkan tidak sesuai.',
+        ])->withInput($request->except('password'));
     }
 
     public function logout(Request $request)

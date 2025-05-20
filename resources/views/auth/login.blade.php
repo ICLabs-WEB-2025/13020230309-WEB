@@ -9,12 +9,18 @@
             <div class="card-body p-4">
                 <h2 class="text-center mb-4">Login to your account</h2>
                 
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <form action="{{ route('login') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="email" class="form-label">Email address</label>
                         <input type="email" class="form-control @error('email') is-invalid @enderror" 
-                            id="email" name="email" value="{{ old('email') }}" required>
+                            id="email" name="email" value="{{ old('email') }}" required autofocus>
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -30,8 +36,8 @@
                     </div>
 
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="remember_me" name="remember">
-                        <label class="form-check-label" for="remember_me">Remember me</label>
+                        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                        <label class="form-check-label" for="remember">Remember me</label>
                     </div>
 
                     <button type="submit" class="btn btn-primary w-100">

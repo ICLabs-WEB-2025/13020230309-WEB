@@ -20,7 +20,7 @@ class ReportController extends Controller
             ->select(
                 DB::raw('DATE(created_at) as date'),
                 DB::raw('COUNT(*) as total_transactions'),
-                DB::raw('SUM(total_amount) as total_sales')
+                DB::raw('SUM(total) as total_sales')
             )
             ->groupBy('date')
             ->orderBy('date')
@@ -62,7 +62,7 @@ class ReportController extends Controller
         $sales = Transaction::whereBetween('created_at', [$startDate, $endDate])
             ->select(
                 DB::raw('DATE(created_at) as date'),
-                DB::raw('SUM(total_amount) as total_sales')
+                DB::raw('SUM(total) as total_sales')
             )
             ->groupBy('date')
             ->orderBy('date')
