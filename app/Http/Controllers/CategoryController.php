@@ -21,14 +21,14 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:categories',
-            'description' => 'nullable|string',
+            'name' => 'required|unique:categories',
+            'description' => 'nullable'
         ]);
 
         Category::create($validated);
 
         return redirect()->route('categories.index')
-            ->with('success', 'Kategori berhasil ditambahkan.');
+            ->with('success', 'Kategori berhasil ditambahkan');
     }
 
     public function edit(Category $category)
@@ -39,25 +39,25 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
-            'description' => 'nullable|string',
+            'name' => 'required|unique:categories,name,' . $category->id,
+            'description' => 'nullable'
         ]);
 
         $category->update($validated);
 
         return redirect()->route('categories.index')
-            ->with('success', 'Kategori berhasil diperbarui.');
+            ->with('success', 'Kategori berhasil diperbarui');
     }
 
     public function destroy(Category $category)
     {
-        if ($category->products()->exists()) {
-            return back()->with('error', 'Kategori tidak dapat dihapus karena masih memiliki produk.');
+        if ($category->products()->count() > 0) {
+            return back()->with('error', 'Kategori tidak dapat dihapus karena masih memiliki produk');
         }
 
         $category->delete();
 
         return redirect()->route('categories.index')
-            ->with('success', 'Kategori berhasil dihapus.');
+            ->with('success', 'Kategori berhasil dihapus');
     }
 } 

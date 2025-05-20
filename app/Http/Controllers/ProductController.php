@@ -3,13 +3,33 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\StockHistory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::latest()->paginate(10);
+        $query = Product::query();
+
+        // Pencarian
+        if ($request->has('search')) {
+            $query->search($request->search);
+        }
+
+        // Filter kategori
+        if ($request->has('category')) {
+            $query->category($request->category);
+        }
+
+        // Filter stok
+        if ($request->has('stock_status')) {
+            $query->stockStatus($request->stock_status);
+        }
+
+        $products = $query->latest()->paginate(10);
+
         return view('products.index', compact('products'));
     }
 
@@ -21,21 +41,40 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'code' => 'required|unique:products',
+            'name' => 'required',
+            'category' => 'required',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'category' => 'required|string|max:255',
+            'description' => 'nullable'
         ]);
 
-        Product::create($validated);
+        DB::beginTransaction();
+        try {
+            $product = Product::create($validated);
 
-        return redirect()->route('products.index')
-            ->with('success', 'Product created successfully.');
+            // Catat riwayat stok awal
+            if ($validated['stock'] > 0) {
+                StockHistory::create([
+                    'product_id' => $product->id,
+                    'type' => 'in',
+                    'quantity' => $validated['stock'],
+                    'description' => 'Stok awal'
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->route('products.index')
+                ->with('success', 'Produk berhasil ditambahkan');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function show(Product $product)
     {
+        $product->load('stockHistories');
         return view('products.show', compact('product'));
     }
 
@@ -47,24 +86,57 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'code' => 'required|unique:products,code,' . $product->id,
+            'name' => 'required',
+            'category' => 'required',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
-            'category' => 'required|string|max:255',
+            'description' => 'nullable'
         ]);
 
-        $product->update($validated);
+        DB::beginTransaction();
+        try {
+            // Hitung selisih stok
+            $stockDiff = $validated['stock'] - $product->stock;
 
-        return redirect()->route('products.index')
-            ->with('success', 'Product updated successfully.');
+            // Update produk
+            $product->update($validated);
+
+            // Catat perubahan stok jika ada
+            if ($stockDiff != 0) {
+                StockHistory::create([
+                    'product_id' => $product->id,
+                    'type' => $stockDiff > 0 ? 'in' : 'out',
+                    'quantity' => abs($stockDiff),
+                    'description' => 'Update stok manual'
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->route('products.index')
+                ->with('success', 'Produk berhasil diperbarui');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function destroy(Product $product)
     {
-        $product->delete();
+        DB::beginTransaction();
+        try {
+            // Hapus riwayat stok
+            $product->stockHistories()->delete();
+            
+            // Hapus produk
+            $product->delete();
 
-        return redirect()->route('products.index')
-            ->with('success', 'Product deleted successfully.');
+            DB::commit();
+            return redirect()->route('products.index')
+                ->with('success', 'Produk berhasil dihapus');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 } 
