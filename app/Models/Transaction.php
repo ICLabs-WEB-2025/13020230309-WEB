@@ -10,9 +10,12 @@ class Transaction extends Model
     use HasFactory;
 
     protected $fillable = [
-        'total_amount',
-        'user_id',
+        'invoice_number',
         'customer_id',
+        'total_amount',
+        'payment_method',
+        'payment_status',
+        'notes'
     ];
 
     protected $casts = [
@@ -37,5 +40,10 @@ class Transaction extends Model
     public function getFormattedTotalAttribute()
     {
         return 'Rp ' . number_format($this->total_amount, 0, ',', '.');
+    }
+
+    public function getFormattedDateAttribute()
+    {
+        return $this->created_at->format('d/m/Y H:i');
     }
 } 

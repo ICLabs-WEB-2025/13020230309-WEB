@@ -10,12 +10,13 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
+        'code',
         'name',
-        'description',
+        'category',
         'price',
         'stock',
-        'category_id',
-        'unit_id',
+        'description',
+        'sn'
     ];
 
     protected $casts = [
@@ -37,8 +38,40 @@ class Product extends Model
         return $this->hasMany(TransactionItem::class);
     }
 
+    public function stockHistories()
+    {
+        return $this->hasMany(StockHistory::class);
+    }
+
+    public function transactionDetails()
+    {
+        return $this->hasMany(TransactionDetail::class);
+    }
+
     public function getFormattedPriceAttribute()
     {
         return 'Rp ' . number_format($this->price, 0, ',', '.');
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('code', 'like', "%{$search}%")
+                    ->orWhere('category', 'like', "%{$search}%");
+    }
+
+    public function scopeCategory($query, $category)
+    {
+        return $query->where('category', $category);
+    }
+
+    public function scopeStockStatus($query, $status)
+    {
+        if ($status === 'in_stock') {
+            return $query->where('stock', '>', 0);
+        } elseif ($status === 'out_of_stock') {
+            return $query->where('stock', 0);
+        }
+        return $query;
     }
 } 
