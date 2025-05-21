@@ -72,11 +72,25 @@
                 <a class="nav-link @if(request()->is('kasir*')) active @endif" href="{{ route('kasir.index') }}">
                     <span class="nav-icon"><i class="fas fa-shopping-cart"></i></span> Penjualan
                 </a>
-                @if(auth()->user() && auth()->user()->role == 'admin')
+                <!-- Master Data Dropdown -->
+                <a class="nav-link" data-bs-toggle="collapse" href="#masterDataMenu" role="button" aria-expanded="false" aria-controls="masterDataMenu">
+                    <span class="nav-icon"><i class="fas fa-database"></i></span> Master Data <i class="fas fa-caret-down float-end"></i>
+                </a>
+                <div class="collapse ms-3 @if(request()->is('barangs*') || request()->is('categories*') || request()->is('units*')) show @endif" id="masterDataMenu">
+                    <a class="nav-link @if(request()->is('barangs*')) active @endif" href="{{ route('barangs.index') }}">
+                        <span class="nav-icon"><i class="fas fa-box"></i></span> Data Barang
+                    </a>
+                    <a class="nav-link @if(request()->is('categories*')) active @endif" href="{{ route('categories.index') }}">
+                        <span class="nav-icon"><i class="fas fa-tags"></i></span> Data Kategori
+                    </a>
+                    <a class="nav-link @if(request()->is('units*')) active @endif" href="{{ route('units.index') }}">
+                        <span class="nav-icon"><i class="fas fa-balance-scale"></i></span> Data Satuan
+                    </a>
+                </div>
+                <!-- End Master Data Dropdown -->
                 <a class="nav-link @if(request()->is('purchases*')) active @endif" href="{{ route('purchases.index') }}">
                     <span class="nav-icon"><i class="fas fa-truck"></i></span> Pembelian
                 </a>
-                @endif
                 <a class="nav-link @if(request()->is('stock-opname*')) active @endif" href="#">
                     <span class="nav-icon"><i class="fas fa-clipboard-list"></i></span> Stock Opname
                 </a>

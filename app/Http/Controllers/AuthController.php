@@ -21,7 +21,12 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('dashboard');
+            $user = Auth::user();
+            if ($user->role === 'admin') {
+                return redirect()->route('dashboard');
+            } else {
+                return redirect()->route('kasir.index');
+            }
         }
 
         return back()->withErrors([
