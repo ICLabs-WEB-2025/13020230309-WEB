@@ -8,7 +8,7 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <div class="input-group">
-                    <input type="text" id="search-barcode" class="form-control" placeholder="Cari barcode/kode/nama barang">
+                    <input type="text" id="search-barcode" class="form-control" placeholder="Cari barcode/kode/nama produk">
                     <button type="button" class="btn btn-outline-primary" id="btn-search">Cari</button>
                 </div>
                 <div id="search-results" class="list-group position-absolute w-50"></div>

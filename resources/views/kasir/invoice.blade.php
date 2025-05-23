@@ -30,7 +30,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama Barang</th>
+                        <th>Nama Produk</th>
                         <th>Satuan</th>
                         <th>Harga</th>
                         <th>Qty</th>

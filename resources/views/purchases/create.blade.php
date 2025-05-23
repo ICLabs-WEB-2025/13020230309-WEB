@@ -34,12 +34,11 @@
                     <tbody>
                         <tr>
                             <td>
-                                <select name="items[0][product_id]" class="form-select" required>
-                                    <option value="">Pilih Produk</option>
-                                    @foreach($products as $product)
-                                    <option value="{{ $product->id }}">{{ $product->name }}</option>
-                                    @endforeach
-                                </select>
+                                <div class="position-relative">
+                                    <input type="text" name="items[0][product_name]" class="form-control product-search" required>
+                                    <input type="hidden" name="items[0][product_id]" class="product-id">
+                                    <div class="product-suggestions position-absolute w-100 bg-white border rounded-bottom" style="display: none; z-index: 1000;"></div>
+                                </div>
                             </td>
                             <td><input type="number" name="items[0][qty]" class="form-control qty" min="1" value="1" required></td>
                             <td><input type="number" name="items[0][price]" class="form-control price" min="0" value="0" required></td>
@@ -62,15 +61,17 @@ let rowIdx = 1;
 document.getElementById('addRow').onclick = function() {
     let table = document.getElementById('itemsTable').getElementsByTagName('tbody')[0];
     let newRow = table.rows[0].cloneNode(true);
-    Array.from(newRow.querySelectorAll('input,select')).forEach(function(el) {
+    Array.from(newRow.querySelectorAll('input')).forEach(function(el) {
         if (el.type === 'number') el.value = (el.classList.contains('qty') ? 1 : 0);
-        if (el.tagName === 'SELECT') el.selectedIndex = 0;
+        if (el.type === 'text') el.value = '';
+        if (el.type === 'hidden') el.value = '';
         el.name = el.name.replace(/items\[\d+\]/, 'items['+rowIdx+']');
     });
     newRow.querySelector('.subtotal').innerText = '0';
     table.appendChild(newRow);
     rowIdx++;
 };
+
 document.getElementById('itemsTable').addEventListener('input', function(e) {
     if (e.target.classList.contains('qty') || e.target.classList.contains('price')) {
         let row = e.target.closest('tr');
@@ -79,10 +80,49 @@ document.getElementById('itemsTable').addEventListener('input', function(e) {
         row.querySelector('.subtotal').innerText = (qty * price).toLocaleString('id-ID');
     }
 });
+
 document.getElementById('itemsTable').addEventListener('click', function(e) {
     if (e.target.classList.contains('remove-row')) {
         let table = document.getElementById('itemsTable').getElementsByTagName('tbody')[0];
         if (table.rows.length > 1) e.target.closest('tr').remove();
+    }
+});
+
+// Product search functionality
+document.addEventListener('click', function(e) {
+    if (!e.target.classList.contains('product-search')) {
+        document.querySelectorAll('.product-suggestions').forEach(el => el.style.display = 'none');
+    }
+});
+
+document.getElementById('itemsTable').addEventListener('input', function(e) {
+    if (e.target.classList.contains('product-search')) {
+        const searchTerm = e.target.value;
+        const suggestionsDiv = e.target.nextElementSibling.nextElementSibling;
+        
+        if (searchTerm.length < 2) {
+            suggestionsDiv.style.display = 'none';
+            return;
+        }
+
+        fetch(`/api/products/search?q=${encodeURIComponent(searchTerm)}`)
+            .then(response => response.json())
+            .then(products => {
+                suggestionsDiv.innerHTML = '';
+                products.forEach(product => {
+                    const div = document.createElement('div');
+                    div.className = 'p-2 border-bottom product-suggestion';
+                    div.style.cursor = 'pointer';
+                    div.textContent = `${product.name} (${product.code})`;
+                    div.onclick = function() {
+                        e.target.value = product.name;
+                        e.target.nextElementSibling.value = product.id;
+                        suggestionsDiv.style.display = 'none';
+                    };
+                    suggestionsDiv.appendChild(div);
+                });
+                suggestionsDiv.style.display = products.length ? 'block' : 'none';
+            });
     }
 });
 </script>

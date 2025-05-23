@@ -12,10 +12,11 @@ class Product extends Model
     protected $fillable = [
         'code',
         'name',
-        'unit',
+        'description',
+        'category_id',
+        'unit_id',
         'price',
-        'stock',
-        'description'
+        'stock'
     ];
 
     protected $casts = [
@@ -61,7 +62,7 @@ class Product extends Model
 
     public function scopeCategory($query, $category)
     {
-        return $query->where('category', $category);
+        return $query->where('category_id', $category);
     }
 
     public function scopeStockStatus($query, $status)

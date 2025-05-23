@@ -42,7 +42,7 @@
             <div class="card shadow h-100 p-3 d-flex flex-row align-items-center">
                 <div style="font-size:2rem;font-weight:bold;">{{ $totalItemsSoldMonth }}</div>
                 <div class="ml-3">
-                    <div><b>Total</b> Barang Terjual Bulan Ini</div>
+                    <div><b>Total</b> Produk Terjual Bulan Ini</div>
                 </div>
                 <div class="ml-auto" style="font-size:2rem;color:#16b3c6;">
                     <i class="fas fa-shopping-cart"></i>
@@ -53,7 +53,7 @@
             <div class="card shadow h-100 p-3 d-flex flex-row align-items-center">
                 <div style="font-size:2rem;font-weight:bold;">{{ $totalProducts }}</div>
                 <div class="ml-3">
-                    <div>Jumlah Barang</div>
+                    <div>Jumlah Produk</div>
                 </div>
                 <div class="ml-auto" style="font-size:2rem;color:#16b3c6;">
                     <i class="fas fa-shopping-bag"></i>
@@ -74,11 +74,11 @@
     </div>
 
     <div class="row">
-        <!-- Data Barang Terlaris -->
+        <!-- Data Produk Terlaris -->
         <div class="col-md-6">
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Data Barang <b>Terlaris</b></h6>
+                    <h6 class="m-0 font-weight-bold text-primary">Data Produk <b>Terlaris</b></h6>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -86,7 +86,7 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Kode Barang</th>
+                                    <th>Kode Produk</th>
                                     <th>Nama</th>
                                     <th>Terjual</th>
                                 </tr>
@@ -118,7 +118,7 @@
                             <thead>
                                 <tr>
                                     <th>No.</th>
-                                    <th>Kode Barang</th>
+                                    <th>Kode Produk</th>
                                     <th>Nama</th>
                                     <th>Stock</th>
                                 </tr>

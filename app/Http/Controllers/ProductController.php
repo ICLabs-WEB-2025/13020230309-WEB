@@ -139,4 +139,16 @@ class ProductController extends Controller
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+        $products = Product::where('name', 'like', "%{$query}%")
+            ->orWhere('code', 'like', "%{$query}%")
+            ->select('id', 'name', 'code')
+            ->limit(10)
+            ->get();
+        
+        return response()->json($products);
+    }
 } 

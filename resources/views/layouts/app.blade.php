@@ -76,9 +76,9 @@
                 <a class="nav-link" data-bs-toggle="collapse" href="#masterDataMenu" role="button" aria-expanded="false" aria-controls="masterDataMenu">
                     <span class="nav-icon"><i class="fas fa-database"></i></span> Master Data <i class="fas fa-caret-down float-end"></i>
                 </a>
-                <div class="collapse ms-3 @if(request()->is('barangs*') || request()->is('categories*') || request()->is('units*')) show @endif" id="masterDataMenu">
-                    <a class="nav-link @if(request()->is('barangs*')) active @endif" href="{{ route('barangs.index') }}">
-                        <span class="nav-icon"><i class="fas fa-box"></i></span> Data Barang
+                <div class="collapse ms-3 @if(request()->is('products*') || request()->is('categories*') || request()->is('units*')) show @endif" id="masterDataMenu">
+                    <a class="nav-link @if(request()->is('products*')) active @endif" href="{{ route('products.index') }}">
+                        <span class="nav-icon"><i class="fas fa-box"></i></span> Data Produk
                     </a>
                     <a class="nav-link @if(request()->is('categories*')) active @endif" href="{{ route('categories.index') }}">
                         <span class="nav-icon"><i class="fas fa-tags"></i></span> Data Kategori

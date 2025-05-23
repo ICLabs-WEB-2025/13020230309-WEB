@@ -39,7 +39,7 @@ class KasirController extends Controller
         try {
             $total = 0;
             foreach ($request->items as $item) {
-                $product = Product::findOrFail($item['product_id']);
+                $product = Product::with('unit')->findOrFail($item['product_id']);
                 if ($product->stock < $item['quantity']) {
                     throw new \Exception('Stok tidak cukup untuk ' . $product->name);
                 }
@@ -59,13 +59,13 @@ class KasirController extends Controller
             ]);
 
             foreach ($request->items as $item) {
-                $product = Product::findOrFail($item['product_id']);
+                $product = Product::with('unit')->findOrFail($item['product_id']);
                 $product->decrement('stock', $item['quantity']);
                 TransactionItem::create([
                     'transaction_id' => $transaction->id,
                     'product_id' => $product->id,
                     'name' => $product->name,
-                    'unit' => $product->unit,
+                    'unit' => $product->unit->name,
                     'price' => $product->price,
                     'quantity' => $item['quantity'],
                     'subtotal' => $product->price * $item['quantity'],

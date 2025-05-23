@@ -12,7 +12,6 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\BarangController;
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -32,7 +31,6 @@ Route::resource('categories', CategoryController::class);
 Route::resource('units', UnitController::class);
 Route::resource('customers', CustomerController::class);
 Route::resource('products', ProductController::class);
-Route::resource('barangs', BarangController::class);
 
 // Transactions (Penjualan)
 Route::resource('transactions', TransactionController::class);
