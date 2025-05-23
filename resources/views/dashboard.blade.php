@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container-fluid">
-    <h1 class="h3 mb-4 text-gray-800">Dashboard <b>Pusat Lamongan</b></h1>
+    <h1 class="h3 mb-4 text-gray-800">Dashboard <b>ShopPulse</b></h1>
 
     <!-- Kartu Penjualan Hari Ini & Invoice Hari Ini -->
     <div class="row mb-3">
