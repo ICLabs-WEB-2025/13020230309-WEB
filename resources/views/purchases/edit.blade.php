@@ -1,22 +1,23 @@
 @extends('layouts.app')
-@section('title', 'Tambah Pembelian')
+@section('title', 'Edit Pembelian')
 @section('content')
 <div class="container">
-    <h3 class="mb-4">Tambah Pembelian Produk</h3>
-    <form action="{{ route('purchases.store') }}" method="POST" id="purchaseForm">
+    <h3 class="mb-4">Edit Pembelian Produk</h3>
+    <form action="{{ route('purchases.update', $purchase->id) }}" method="POST" id="purchaseForm">
         @csrf
+        @method('PUT')
         <div class="row mb-3">
             <div class="col-md-4">
                 <label>Supplier</label>
-                <input type="text" name="supplier" class="form-control" required>
+                <input type="text" name="supplier" class="form-control" value="{{ $purchase->supplier }}" required>
             </div>
             <div class="col-md-4">
                 <label>Tanggal</label>
-                <input type="date" name="tanggal" class="form-control" value="{{ date('Y-m-d') }}" required>
+                <input type="date" name="tanggal" class="form-control" value="{{ $purchase->tanggal }}" required>
             </div>
             <div class="col-md-4">
                 <label>Keterangan</label>
-                <input type="text" name="keterangan" class="form-control">
+                <input type="text" name="keterangan" class="form-control" value="{{ $purchase->keterangan }}">
             </div>
         </div>
         <div class="card mb-3">
@@ -41,17 +42,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Items will be added here dynamically -->
+                        @foreach($purchase->items as $index => $item)
+                        <tr>
+                            <td>
+                                {{ $item->product->name }}
+                                <input type="hidden" name="items[{{ $index }}][product_id]" value="{{ $item->product_id }}">
+                            </td>
+                            <td>
+                                <input type="number" name="items[{{ $index }}][qty]" class="form-control qty" min="1" value="{{ $item->qty }}" required>
+                            </td>
+                            <td>
+                                <input type="number" name="items[{{ $index }}][price]" class="form-control price" min="0" value="{{ $item->price }}" required>
+                            </td>
+                            <td class="subtotal">{{ number_format($item->subtotal, 0, ',', '.') }}</td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm remove-row">Hapus</button>
+                            </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                 </table>
                 <div class="text-end mb-3">
-                    <strong>Total: <span id="total-amount">Rp 0</span></strong>
+                    <strong>Total: <span id="total-amount">Rp {{ number_format($purchase->total, 0, ',', '.') }}</span></strong>
                 </div>
                 <button type="button" class="btn btn-success" id="addRow">Tambah Produk</button>
             </div>
         </div>
         <div class="mb-3 text-end">
-            <button type="submit" class="btn btn-primary">Simpan Pembelian</button>
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
         </div>
     </form>
 </div>
@@ -59,7 +77,7 @@
 @push('scripts')
 <script>
 $(document).ready(function() {
-    let rowIdx = 0;
+    let rowIdx = {{ count($purchase->items) }};
     const products = @json($products);
     
     // Function to format currency
