@@ -63,7 +63,7 @@
                     <img src="https://ui-avatars.com/api/?name=Kasir&background=16b3c6&color=fff" alt="Kasir">
                 </div>
                 <div style="font-weight:bold;">Kasir</div>
-                <div style="font-size:0.9rem; color:#adb5bd;">POS - Inventory</div>
+                <div style="font-size:0.9rem; color:#adb5bd;">ShopPulse</div>
             </div>
             <nav class="nav flex-column mt-3">
                 <a class="nav-link @if(request()->routeIs('dashboard')) active @endif" href="{{ route('dashboard') }}">

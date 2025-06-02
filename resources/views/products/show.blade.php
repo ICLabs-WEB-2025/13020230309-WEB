@@ -30,7 +30,7 @@
                     </tr>
                     <tr>
                         <th>Kategori</th>
-                        <td>{{ $product->category }}</td>
+                        <td>{{ $product->category ? $product->category->name : '-' }}</td>
                     </tr>
                     <tr>
                         <th>Harga</th>
