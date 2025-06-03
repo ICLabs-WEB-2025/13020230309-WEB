@@ -65,7 +65,7 @@ class KasirController extends Controller
                     'transaction_id' => $transaction->id,
                     'product_id' => $product->id,
                     'name' => $product->name,
-                    'unit' => $product->unit->name,
+                    'unit' => $product->unit ? $product->unit->name : '-',
                     'price' => $product->price,
                     'quantity' => $item['quantity'],
                     'subtotal' => $product->price * $item['quantity'],
