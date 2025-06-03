@@ -29,7 +29,7 @@
                     <tr>
                         <td>{{ $product->code }}</td>
                         <td>{{ $product->name }}</td>
-                        <td>{{ $product->category }}</td>
+                        <td>{{ $product->category ? $product->category->name : '-' }}</td>
                         <td>Rp {{ number_format($product->price, 0, ',', '.') }}</td>
                         <td>{{ $product->stock }}</td>
                         <td>

@@ -1,6 +1,29 @@
 @extends('layouts.app')
 @section('title', 'Invoice')
 
+<style>
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+    #invoice-area, #invoice-area * {
+        visibility: visible !important;
+    }
+    #invoice-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white;
+        z-index: 9999;
+    }
+    /* Sembunyikan tombol print dan kembali saat print */
+    .btn, .alert, .sidebar, .navbar, .logout {
+        display: none !important;
+    }
+}
+</style>
+
 @section('content') 
 <div id="invoice-area">
     <div class="container">

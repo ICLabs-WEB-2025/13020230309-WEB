@@ -25,7 +25,9 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        $products = Product::select('id', 'code', 'name', 'price')->get();
+        $products = Product::whereNotNull('category_id')
+            ->select('id', 'code', 'name', 'price')
+            ->get();
         return view('purchases.create', compact('products'));
     }
 
@@ -96,7 +98,9 @@ class PurchaseController extends Controller
     public function edit($id)
     {
         $purchase = Purchase::with(['items.product'])->findOrFail($id);
-        $products = Product::select('id', 'code', 'name', 'price')->get();
+        $products = Product::whereNotNull('category_id')
+            ->select('id', 'code', 'name', 'price')
+            ->get();
         return view('purchases.edit', compact('purchase', 'products'));
     }
 

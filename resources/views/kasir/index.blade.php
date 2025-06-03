@@ -183,4 +183,22 @@ document.getElementById('kasirForm').addEventListener('submit', function(e) {
 });
 </script>
 @endpush
-sa
+
+<style>
+@media print {
+    body * {
+        visibility: hidden !important;
+    }
+    #invoice-area, #invoice-area * {
+        visibility: visible !important;
+    }
+    #invoice-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        background: white;
+        z-index: 9999;
+    }
+}
+</style>
