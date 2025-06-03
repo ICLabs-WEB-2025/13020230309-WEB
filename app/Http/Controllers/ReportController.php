@@ -9,8 +9,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
+// ReportController
+// Controller untuk menampilkan laporan penjualan, pengeluaran, keuangan, dan stok.
+//
+// Fitur utama:
+// - Laporan penjualan harian/bulanan
+// - Laporan pengeluaran
+// - Laporan keuangan (laba/rugi)
+// - Laporan stok dan produk terlaris
+
 class ReportController extends Controller
 {
+    // Laporan penjualan
     public function sales(Request $request)
     {
         $startDate = $request->input('start_date', Carbon::today()->subDays(30));
@@ -32,6 +42,7 @@ class ReportController extends Controller
         return view('reports.sales', compact('sales', 'totalSales', 'totalTransactions', 'startDate', 'endDate'));
     }
 
+    // Laporan pengeluaran
     public function expenses(Request $request)
     {
         $startDate = $request->input('start_date', Carbon::today()->subDays(30));
@@ -53,6 +64,7 @@ class ReportController extends Controller
         return view('reports.expenses', compact('expenses', 'totalExpenses', 'totalExpenseCount', 'startDate', 'endDate'));
     }
 
+    // Laporan keuangan (laba/rugi)
     public function financial(Request $request)
     {
         $startDate = $request->input('start_date', Carbon::today()->subDays(30));
@@ -105,6 +117,7 @@ class ReportController extends Controller
         ));
     }
 
+    // Laporan stok dan produk
     public function inventory()
     {
         $products = Product::select(

@@ -8,8 +8,18 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+// ProductController
+// Controller untuk mengelola produk/barang di toko.
+//
+// Fitur utama:
+// - Melihat daftar produk
+// - Menambah, mengedit, dan menghapus produk
+// - Mencatat riwayat stok
+// - Mencari produk
+
 class ProductController extends Controller
 {
+    // Menampilkan daftar produk dengan filter dan pencarian
     public function index(Request $request)
     {
         $query = Product::with('category');
@@ -34,12 +44,17 @@ class ProductController extends Controller
         return view('products.index', compact('products'));
     }
 
+    // Menampilkan form tambah produk
     public function create()
     {
         $categories = Category::all();
         return view('products.create', compact('categories'));
     }
 
+    // Menyimpan produk baru
+    // - Validasi input
+    // - Simpan produk
+    // - Catat riwayat stok awal jika ada
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -74,18 +89,24 @@ class ProductController extends Controller
         }
     }
 
+    // Menampilkan detail produk
     public function show(Product $product)
     {
         $product->load('stockHistories');
         return view('products.show', compact('product'));
     }
 
+    // Menampilkan form edit produk
     public function edit(Product $product)
     {
         $categories = Category::all();
         return view('products.edit', compact('product', 'categories'));
     }
 
+    // Mengupdate data produk
+    // - Validasi input
+    // - Update produk
+    // - Catat perubahan stok jika ada
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
@@ -124,6 +145,7 @@ class ProductController extends Controller
         }
     }
 
+    // Menghapus produk dan riwayat stoknya
     public function destroy(Product $product)
     {
         DB::beginTransaction();
@@ -143,6 +165,7 @@ class ProductController extends Controller
         }
     }
 
+    // Mencari produk berdasarkan nama atau kode
     public function search(Request $request)
     {
         $query = $request->input('q');

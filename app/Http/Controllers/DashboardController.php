@@ -9,8 +9,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
+// DashboardController
+// Controller untuk menampilkan ringkasan statistik dan data utama di dashboard aplikasi.
+//
+// Fitur utama:
+// - Menampilkan total penjualan, pengeluaran, laba/rugi hari ini
+// - Menampilkan produk terlaris, stok terendah, dan statistik bulanan
+
 class DashboardController extends Controller
 {
+    // Menampilkan dashboard dengan berbagai statistik
     public function index()
     {
         // Total penjualan hari ini

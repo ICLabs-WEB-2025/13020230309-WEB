@@ -9,20 +9,25 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+// PurchaseController
+// Controller untuk mengelola pembelian barang dari supplier.
+//
+// Fitur utama:
+// - Melihat daftar pembelian
+// - Membuat, mengedit, dan menghapus pembelian
+// - Menambah/mengurangi stok produk sesuai pembelian
+// - Menampilkan detail pembelian
+
 class PurchaseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Menampilkan daftar pembelian
     public function index()
     {
         $purchases = Purchase::with('user')->latest()->paginate(10);
         return view('purchases.index', compact('purchases'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Menampilkan form tambah pembelian baru
     public function create()
     {
         $products = Product::whereNotNull('category_id')
@@ -31,9 +36,11 @@ class PurchaseController extends Controller
         return view('purchases.create', compact('products'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    // Menyimpan data pembelian baru
+    // - Validasi input
+    // - Hitung total
+    // - Simpan pembelian dan item
+    // - Update stok produk
     public function store(Request $request)
     {
         $request->validate([
@@ -59,6 +66,7 @@ class PurchaseController extends Controller
                 'user_id' => Auth::id(),
             ]);
 
+            // Simpan item pembelian dan update stok
             foreach ($request->items as $item) {
                 $product = Product::findOrFail($item['product_id']);
                 
@@ -83,18 +91,14 @@ class PurchaseController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // Menampilkan detail pembelian
     public function show($id)
     {
         $purchase = Purchase::with(['items.product', 'user'])->findOrFail($id);
         return view('purchases.show', compact('purchase'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // Menampilkan form edit pembelian
     public function edit($id)
     {
         $purchase = Purchase::with(['items.product'])->findOrFail($id);
@@ -104,9 +108,11 @@ class PurchaseController extends Controller
         return view('purchases.edit', compact('purchase', 'products'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // Mengupdate data pembelian
+    // - Validasi input
+    // - Kembalikan stok lama
+    // - Hapus item lama
+    // - Simpan item baru dan update stok
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -144,7 +150,7 @@ class PurchaseController extends Controller
                 'keterangan' => $request->keterangan,
             ]);
 
-            // Tambah item baru
+            // Tambah item baru dan update stok
             foreach ($request->items as $item) {
                 $product = Product::findOrFail($item['product_id']);
                 
@@ -169,9 +175,9 @@ class PurchaseController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Menghapus data pembelian
+    // - Kembalikan stok produk
+    // - Hapus item dan pembelian
     public function destroy($id)
     {
         DB::beginTransaction();

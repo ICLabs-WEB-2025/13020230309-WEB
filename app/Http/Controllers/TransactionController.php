@@ -7,8 +7,17 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+// TransactionController
+// Controller untuk mengelola transaksi penjualan secara umum (bukan kasir harian).
+//
+// Fitur utama:
+// - Melihat daftar transaksi
+// - Membuat, mengedit, dan menghapus transaksi
+// - Mengelola item transaksi dan stok produk
+
 class TransactionController extends Controller
 {
+    // Menampilkan daftar transaksi
     public function index()
     {
         $transactions = Transaction::with('items')
@@ -17,12 +26,17 @@ class TransactionController extends Controller
         return view('transactions.index', compact('transactions'));
     }
 
+    // Menampilkan form tambah transaksi
     public function create()
     {
         $products = Product::where('stock', '>', 0)->get();
         return view('transactions.create', compact('products'));
     }
 
+    // Menyimpan transaksi baru
+    // - Validasi input
+    // - Simpan transaksi dan item
+    // - Kurangi stok produk
     public function store(Request $request)
     {
         $request->validate([
@@ -70,12 +84,14 @@ class TransactionController extends Controller
         }
     }
 
+    // Menampilkan detail transaksi
     public function show(Transaction $transaction)
     {
         $transaction->load('items.product');
         return view('transactions.show', compact('transaction'));
     }
 
+    // Menampilkan form edit transaksi
     public function edit(Transaction $transaction)
     {
         $transaction->load('items.product');
@@ -83,6 +99,11 @@ class TransactionController extends Controller
         return view('transactions.edit', compact('transaction', 'products'));
     }
 
+    // Mengupdate data transaksi
+    // - Validasi input
+    // - Kembalikan stok lama
+    // - Hapus item lama
+    // - Simpan item baru dan update stok
     public function update(Request $request, Transaction $transaction)
     {
         $request->validate([
@@ -125,6 +146,9 @@ class TransactionController extends Controller
         }
     }
 
+    // Menghapus transaksi
+    // - Kembalikan stok produk
+    // - Hapus item dan transaksi
     public function destroy(Transaction $transaction)
     {
         try {

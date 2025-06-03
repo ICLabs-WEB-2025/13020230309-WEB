@@ -5,19 +5,31 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 
+// CustomerController
+// Controller untuk mengelola data pelanggan toko.
+//
+// Fitur utama:
+// - Melihat daftar pelanggan
+// - Menambah, mengedit, dan menghapus pelanggan
+
 class CustomerController extends Controller
 {
+    // Menampilkan daftar pelanggan
     public function index()
     {
         $customers = Customer::latest()->paginate(10);
         return view('customers.index', compact('customers'));
     }
 
+    // Menampilkan form tambah pelanggan
     public function create()
     {
         return view('customers.create');
     }
 
+    // Menyimpan pelanggan baru
+    // - Validasi input
+    // - Simpan pelanggan ke database
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -33,11 +45,15 @@ class CustomerController extends Controller
             ->with('success', 'Pelanggan berhasil ditambahkan.');
     }
 
+    // Menampilkan form edit pelanggan
     public function edit(Customer $customer)
     {
         return view('customers.edit', compact('customer'));
     }
 
+    // Mengupdate data pelanggan
+    // - Validasi input
+    // - Update pelanggan di database
     public function update(Request $request, Customer $customer)
     {
         $validated = $request->validate([
@@ -53,6 +69,8 @@ class CustomerController extends Controller
             ->with('success', 'Pelanggan berhasil diperbarui.');
     }
 
+    // Menghapus pelanggan
+    // - Tidak bisa hapus jika masih ada transaksi
     public function destroy(Customer $customer)
     {
         if ($customer->transactions()->exists()) {
