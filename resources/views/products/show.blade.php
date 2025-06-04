@@ -1,3 +1,10 @@
+{{--
+    show.blade.php (Products)
+    Halaman detail produk/barang.
+    Fitur:
+    - Menampilkan detail produk
+    - Tabel riwayat stok produk
+--}}
 @extends('layouts.app')
 
 @section('title', 'Detail Produk - Kasir Toko')

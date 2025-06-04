@@ -1,3 +1,10 @@
+{{--
+    create.blade.php (Units)
+    Halaman form tambah satuan produk.
+    Fitur:
+    - Form input nama dan deskripsi satuan
+    - Tombol simpan satuan
+--}}
 @extends('layouts.app')
 
 @section('title', 'Tambah Satuan/Unit')

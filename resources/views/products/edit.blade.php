@@ -1,10 +1,19 @@
+{{--
+    edit.blade.php (Products)
+    Halaman form edit produk/barang.
+    Fitur:
+    - Form edit data produk (nama, kode, harga, stok, kategori, satuan, deskripsi)
+    - Tombol update produk
+--}}
 @extends('layouts.app')
 
 @section('title', 'Edit Produk - Kasir Toko')
 
 @section('content')
+{{-- Card utama edit produk --}}
 <div class="card shadow-sm">
     <div class="card-body">
+        {{-- Header dan tombol kembali --}}
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h3 mb-0">Edit Produk</h1>
             <a href="{{ route('products.index') }}" class="btn btn-secondary">
@@ -12,11 +21,13 @@
             </a>
         </div>
 
+        {{-- Form edit produk --}}
         <form action="{{ route('products.update', $product) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="row">
                 <div class="col-md-6">
+                    {{-- Input kode produk --}}
                     <div class="mb-3">
                         <label for="code" class="form-label">Kode Produk</label>
                         <input type="text" class="form-control @error('code') is-invalid @enderror" 
@@ -26,6 +37,7 @@
                         @enderror
                     </div>
 
+                    {{-- Input nama produk --}}
                     <div class="mb-3">
                         <label for="name" class="form-label">Nama Produk</label>
                         <input type="text" class="form-control @error('name') is-invalid @enderror" 
@@ -35,6 +47,7 @@
                         @enderror
                     </div>
 
+                    {{-- Pilih kategori produk --}}
                     <div class="mb-3">
                         <label for="category_id" class="form-label">Kategori</label>
                         <select class="form-select @error('category_id') is-invalid @enderror" 
@@ -53,6 +66,7 @@
                 </div>
 
                 <div class="col-md-6">
+                    {{-- Input harga produk --}}
                     <div class="mb-3">
                         <label for="price" class="form-label">Harga</label>
                         <div class="input-group">
@@ -65,6 +79,7 @@
                         @enderror
                     </div>
 
+                    {{-- Input stok produk --}}
                     <div class="mb-3">
                         <label for="stock" class="form-label">Stok</label>
                         <input type="number" class="form-control @error('stock') is-invalid @enderror" 
@@ -74,6 +89,7 @@
                         @enderror
                     </div>
 
+                    {{-- Input deskripsi produk --}}
                     <div class="mb-3">
                         <label for="description" class="form-label">Deskripsi</label>
                         <textarea class="form-control @error('description') is-invalid @enderror" 
@@ -85,6 +101,7 @@
                 </div>
             </div>
 
+            {{-- Tombol update produk --}}
             <div class="text-end">
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-save"></i> Simpan Perubahan

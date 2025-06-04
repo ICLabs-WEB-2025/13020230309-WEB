@@ -1,3 +1,10 @@
+{{--
+    index.blade.php (Purchases)
+    Halaman daftar pembelian barang dari supplier.
+    Fitur:
+    - Tabel daftar pembelian
+    - Link ke tambah, edit, dan detail pembelian
+--}}
 @extends('layouts.app')
 @section('title', 'Daftar Pembelian')
 @section('content')

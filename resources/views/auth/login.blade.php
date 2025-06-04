@@ -1,3 +1,11 @@
+{{--
+    login.blade.php (Auth)
+    Halaman login user (admin/kasir).
+    Fitur:
+    - Form input email dan password
+    - Validasi dan pesan error
+    - Tombol login
+--}}
 <!DOCTYPE html>
 <html lang="en">
 <head>

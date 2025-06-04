@@ -1,3 +1,10 @@
+{{--
+    edit.blade.php (Units)
+    Halaman form edit satuan produk.
+    Fitur:
+    - Form edit nama dan deskripsi satuan
+    - Tombol update satuan
+--}}
 @extends('layouts.app')
 
 @section('title', 'Edit Satuan/Unit')

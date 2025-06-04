@@ -1,3 +1,11 @@
+{{--
+    edit.blade.php (Purchases)
+    Halaman form edit pembelian barang dari supplier.
+    Fitur:
+    - Form edit data supplier, tanggal, keterangan
+    - Tabel edit produk dan qty
+    - Tombol update pembelian
+--}}
 @extends('layouts.app')
 @section('title', 'Edit Pembelian')
 @section('content')

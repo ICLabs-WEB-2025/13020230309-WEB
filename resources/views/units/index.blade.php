@@ -1,3 +1,10 @@
+{{--
+    index.blade.php (Units)
+    Halaman daftar satuan produk.
+    Fitur:
+    - Tabel daftar satuan
+    - Link ke tambah dan edit satuan
+--}}
 @extends('layouts.app')
 
 @section('title', 'Daftar Satuan/Unit')

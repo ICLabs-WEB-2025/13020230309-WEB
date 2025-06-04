@@ -1,3 +1,4 @@
+<?php   
 // Controller
 // Base controller untuk semua controller lain di aplikasi ini.
 // Biasanya digunakan untuk shared logic atau middleware global.

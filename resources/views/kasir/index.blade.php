@@ -1,12 +1,26 @@
+{{--
+    index.blade.php (Kasir)
+    Halaman utama transaksi kasir.
+    Fitur:
+    - Input produk ke keranjang (search barcode/kode/nama)
+    - Pilih customer dan tipe pembayaran
+    - Tabel keranjang belanja
+    - Input diskon, bayar, dan hitung kembali
+    - Simpan transaksi dan redirect ke invoice
+    - Script JS untuk handle keranjang dan AJAX
+--}}
 @extends('layouts.app')
 @section('title', 'Kasir')
 
 @section('content')
 <div class="container">
+    {{-- Header halaman --}}
     <h3 class="mb-4">Transaksi Kasir</h3>
+    {{-- Form transaksi kasir --}}
     <form id="kasirForm">
         <div class="row mb-3">
             <div class="col-md-6">
+                {{-- Input pencarian produk --}}
                 <div class="input-group">
                     <input type="text" id="search-barcode" class="form-control" placeholder="Cari barcode/kode/nama produk">
                     <button type="button" class="btn btn-outline-primary" id="btn-search">Cari</button>
@@ -14,17 +28,20 @@
                 <div id="search-results" class="list-group position-absolute w-50"></div>
             </div>
             <div class="col-md-3">
+                {{-- Pilih customer --}}
                 <select class="form-select" id="customer" name="customer">
                     <option value="Umum">Umum</option>
                 </select>
             </div>
             <div class="col-md-3">
+                {{-- Pilih tipe pembayaran --}}
                 <select class="form-select" id="payment_type" name="payment_type">
                     <option value="cash">Cash</option>
                     <option value="transfer">Transfer</option>
                 </select>
             </div>
         </div>
+        {{-- Tabel keranjang belanja --}}
         <table class="table table-bordered" id="cart-table">
             <thead class="table-light">
                 <tr>
@@ -43,6 +60,7 @@
         </table>
         <div class="row">
             <div class="col-md-4 offset-md-8">
+                {{-- Ringkasan pembayaran --}}
                 <table class="table">
                     <tr>
                         <th>Total</th>
@@ -73,6 +91,7 @@
 @endsection
 
 @push('scripts')
+{{-- Script JS untuk handle keranjang, pencarian produk, dan submit transaksi --}}
 <script>
 let cart = [];
 function renderCart() {
@@ -184,6 +203,7 @@ document.getElementById('kasirForm').addEventListener('submit', function(e) {
 </script>
 @endpush
 
+{{-- CSS khusus print untuk invoice (jika ada) --}}
 <style>
 @media print {
     body * {

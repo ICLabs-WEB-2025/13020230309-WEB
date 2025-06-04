@@ -1,3 +1,10 @@
+{{--
+    show.blade.php (Purchases)
+    Halaman detail pembelian barang dari supplier.
+    Fitur:
+    - Menampilkan detail supplier, tanggal, keterangan
+    - Tabel produk yang dibeli
+--}}
 @extends('layouts.app')
 @section('title', 'Detail Pembelian')
 @section('content')

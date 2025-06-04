@@ -1,3 +1,10 @@
+{{--
+    dashboard.blade.php
+    Halaman dashboard utama aplikasi.
+    Fitur:
+    - Menampilkan statistik penjualan, pengeluaran, laba/rugi
+    - Tabel produk terlaris, stok terendah, dsb
+--}}
 @extends('layouts.app')
 
 @section('title', 'Dashboard')

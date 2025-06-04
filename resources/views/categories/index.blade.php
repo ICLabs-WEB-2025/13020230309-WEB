@@ -1,3 +1,10 @@
+{{--
+    index.blade.php (Categories)
+    Halaman daftar kategori produk.
+    Fitur:
+    - Tabel daftar kategori
+    - Link ke tambah dan edit kategori
+--}}
 @extends('layouts.app')
 
 @section('title', 'Daftar Kategori')

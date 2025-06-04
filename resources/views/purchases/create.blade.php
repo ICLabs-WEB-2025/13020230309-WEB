@@ -1,3 +1,11 @@
+{{--
+    create.blade.php (Purchases)
+    Halaman form tambah pembelian barang dari supplier.
+    Fitur:
+    - Form input supplier, tanggal, keterangan
+    - Tabel input produk dan qty
+    - Tombol simpan pembelian
+--}}
 @extends('layouts.app')
 @section('title', 'Tambah Pembelian')
 @section('content')

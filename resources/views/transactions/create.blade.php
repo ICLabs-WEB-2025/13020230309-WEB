@@ -1,3 +1,11 @@
+{{--
+    create.blade.php (Transactions)
+    Halaman form tambah transaksi penjualan.
+    Fitur:
+    - Form input produk, qty, dan customer
+    - Tabel keranjang transaksi
+    - Tombol simpan transaksi
+--}}
 @extends('layouts.app')
 
 @section('title', 'Transaksi Baru - Kasir Toko')

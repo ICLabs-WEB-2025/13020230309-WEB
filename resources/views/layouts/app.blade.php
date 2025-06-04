@@ -1,3 +1,11 @@
+{{--
+    app.blade.php (Layouts)
+    Layout utama aplikasi (template dasar semua halaman).
+    Fitur:
+    - Struktur HTML dasar
+    - Include navbar/sidebar
+    - Yield section content dan scripts
+--}}
 <!DOCTYPE html>
 <html lang="en">
 <head>

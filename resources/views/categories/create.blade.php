@@ -1,3 +1,10 @@
+{{--
+    create.blade.php (Categories)
+    Halaman form tambah kategori produk.
+    Fitur:
+    - Form input nama dan deskripsi kategori
+    - Tombol simpan kategori
+--}}
 @extends('layouts.app')
 
 @section('title', 'Tambah Kategori')
